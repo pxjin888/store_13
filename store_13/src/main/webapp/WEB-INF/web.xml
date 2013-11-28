@@ -1,0 +1,97 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+          http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+    version="3.0">
+    <display-name>store</display-name>
+    <welcome-file-list>
+    	<welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    <!-- WebApp Root -->  
+    <context-param>  
+        <param-name>webAppRootKey</param-name>  
+        <param-value>webapp.root</param-value>  
+    </context-param> 
+   
+   <!-- 验证码 -->
+    <servlet>
+		<servlet-name>ValidateCodeServlet</servlet-name>
+		<servlet-class>
+			cn.btttech.util.ValidateCodeServlet
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ValidateCodeServlet</servlet-name>
+		<url-pattern>/validateCodeServlet</url-pattern>
+	</servlet-mapping>
+    
+    <!-- Spring Encoding Filter -->  
+    <filter>  
+        <filter-name>encodingFilter</filter-name>  
+        <filter-class>  
+            org.springframework.web.filter.CharacterEncodingFilter  
+        </filter-class>  
+        <init-param>  
+            <param-name>encoding</param-name>  
+            <param-value>UTF-8</param-value>  
+        </init-param>  
+    </filter>
+    <filter-mapping>  
+        <filter-name>encodingFilter</filter-name>  
+        <url-pattern>/*</url-pattern>  
+    </filter-mapping>
+    
+    
+    <!-- Struts2 Filter -->  
+    <filter>  
+        <filter-name>struts2</filter-name>  
+        <filter-class>  
+            org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter  
+        </filter-class>  
+    </filter>  
+    <filter-mapping>  
+        <filter-name>struts2</filter-name>  
+        <url-pattern>*.action</url-pattern>  
+    </filter-mapping>
+    <filter-mapping>
+	    <filter-name>struts2</filter-name>
+	    <url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+    <!-- Spring Log4j Listener -->  
+    <listener>  
+        <listener-class>  
+            org.springframework.web.util.Log4jConfigListener  
+        </listener-class>  
+    </listener>
+  
+    <!-- Spring ConfigurationFile Location -->  
+    <context-param>  
+        <param-name>contextConfigLocation</param-name>  
+        <param-value>classpath:applicationContext.xml</param-value>  
+    </context-param>  
+  
+    <!-- Spring Context Listener -->  
+    <listener>  
+        <listener-class>  
+            org.springframework.web.context.ContextLoaderListener  
+        </listener-class>  
+    </listener>  
+  
+    <!-- Spring Web Request Listener -->  
+    <listener>  
+        <listener-class>  
+            org.springframework.web.context.request.RequestContextListener  
+        </listener-class>  
+    </listener>  
+  
+    <!-- Spring Introspector Cleanup Listener -->  
+    <listener>  
+        <listener-class>  
+            org.springframework.web.util.IntrospectorCleanupListener  
+        </listener-class>  
+    </listener>
+    <context-param>
+    	<param-name>maxPageResult</param-name>
+    	<param-value>5</param-value>
+    </context-param>
+    
+</web-app>

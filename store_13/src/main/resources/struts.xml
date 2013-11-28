@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE struts PUBLIC  
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"  
+    "http://struts.apache.org/dtds/struts-2.3.dtd">  
+  
+<struts>  
+  
+    <constant name="struts.devMode" value="false" />  
+    <constant name="struts.i18n.encoding" value="UTF-8" />  
+  
+    <package name="default" extends="struts-default">  
+  
+        <action name="login" method="login" class="cn.btttech.action.UserAction">  
+            <result name="error">/login.jsp</result>  
+            <result name="success">/main.jsp</result>  
+        </action>  
+        <action name="changepwd">  
+            <result>/btt/user/changepwd.html</result>  
+        </action>  
+  		<action name="user_list" method="list" class="cn.btttech.action.UserAction">
+  			<result name="success">/btt/user/user_list.jsp</result>
+  		</action>
+  		<action name="user_add">
+  			<result name="success">/btt/user/user_add.jsp</result>
+  		</action>
+  		<action name="user_modify" method="modify" class="cn.btttech.action.UserAction">
+  			<result name="success">/btt/user/user_edit.jsp</result>
+  		</action>
+  		<action name="group_list" method="list" class="cn.btttech.action.GroupAction">
+  			<result name="success">/btt/user/group_list.jsp</result>
+  		</action>
+  		<action name="group_addDisplay" method="addDisplay" class="cn.btttech.action.GroupAction">
+  			<result name="success">/btt/user/group_addDisplay.jsp</result>
+  		</action>
+  		<action name="group_add" method="add" class="cn.btttech.action.GroupAction">
+  			<result type="stream">
+		        <param name="contentType">text/html</param>
+		        <param name="inputName">inputStream</param>
+		    </result>
+  		</action>
+  		<action name="module_list" method="list" class="cn.btttech.action.ModuleAction">
+  			<result name="success">/btt/system/module_list.jsp</result>
+  		</action>
+  		<action name="operation_list" method="list" class="cn.btttech.action.OperationAction">
+  			<result name="success">/btt/system/operation_list.jsp</result>
+  		</action>
+  		<action name="material_list" method="list" class="cn.btttech.action.MaterialAction">
+  			<result name="success">/btt/material/material_list.jsp</result>
+  		</action>
+  		<action name="material_list_combineLookup" method="list" class="cn.btttech.action.MaterialAction">
+  			<result name="success">/btt/material/material_combineLookup.jsp</result>
+  		</action>
+  		
+  		<action name="material_list_combineLookup_factory" method="listAndFactory" class="cn.btttech.action.MaterialAction">
+  			<result name="success">/btt/material/materialFactory_combineLookup.jsp</result>
+  			<result name="in">/btt/material/materialFactory_combineLookup_in.jsp</result>
+  			<result name="out">/btt/material/materialFactory_combineLookup_out.jsp</result>
+  		</action>
+  		<action name="material_add" method="add" class="cn.btttech.action.MaterialAction">
+  			<result type="stream">
+		        <param name="contentType">text/html</param>
+		        <param name="inputName">inputStream</param>
+		    </result>
+  		</action>
+  		<action name="materialFactory_list" method="list" class="cn.btttech.action.MaterialFactoryAction">
+  			<result name="success">/btt/material/materialFactory_list.jsp</result>
+  		</action>
+  		<action name="materialFactory_add" method="add" class="cn.btttech.action.MaterialFactoryAction">
+  			<result type="stream">
+		        <param name="contentType">text/html</param>
+		        <param name="inputName">inputStream</param>
+		    </result>
+  		</action>
+  		<action name="materialLog_list" method="list" class="cn.btttech.action.MaterialLogAction">
+  			<result name="success">/btt/material/materialLog_list.jsp</result>
+  		</action>
+  		<action name="materialLog_add" method="add" class="cn.btttech.action.MaterialLogAction">
+  			<result type="stream">
+		        <param name="contentType">text/html</param>
+		        <param name="inputName">inputStream</param>
+		    </result>
+  		</action>
+    </package>  
+  
+</struts>  
