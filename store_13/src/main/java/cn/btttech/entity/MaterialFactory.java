@@ -149,7 +149,8 @@ public class MaterialFactory  implements java.io.Serializable {
         this.materialFactoryWeb = materialFactoryWeb;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "materialFactory")
+    @ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "materialprice_materialfactory_relation", catalog = "store", joinColumns = { @JoinColumn(name = "material_factory_id", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "material_price_id", nullable = false, updatable = false) })
 	public Set<MaterialPrice> getMaterialPrices() {
 		return this.materialPrices;
 	}

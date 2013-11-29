@@ -1,16 +1,16 @@
 package cn.btttech.entity;
 
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -34,7 +34,7 @@ public class MaterialPrice  implements java.io.Serializable {
      private Float materialPriceInputprice;
      private Float materialPartNum;
      private Date materialPriceTime;
-
+     private Set<MaterialFactory> materialFactories = new HashSet<MaterialFactory>(0);
 
     // Constructors
 
@@ -105,4 +105,12 @@ public class MaterialPrice  implements java.io.Serializable {
         this.materialPriceTime = materialPriceTime;
     }
 
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "materialPrices")
+	public Set<MaterialFactory> getMaterialFactories() {
+		return this.materialFactories;
+	}
+
+	public void setMaterialFactories(Set<MaterialFactory> materialFactories) {
+		this.materialFactories = materialFactories;
+	}
 }

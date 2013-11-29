@@ -76,6 +76,8 @@
 		var materialProviderName = "";
 		var materialInputPrice = "";
 		var materialPartNum = "";
+		var materialNum = 0;
+		
 		
 		obj.find(".box").parent().parent().children().each(function(){
 			if($(this).children(".box").attr("checked")=="checked"||$(this).children(".box").attr("checked")=="true"){
@@ -84,6 +86,7 @@
 				materialProviderName += $(this).children(".materialFactoryName").text() + "&";
 				materialInputPrice += $(this).children(".inputPrice").text() + "&";
 				materialPartNum += $(this).children(".materialPartNum").val() + "&";
+				materialNum += parseInt($(this).children(".materialPartNum").val());
 			}
 		});
 		var checkbox = obj.children().eq(0).children("div").children("input");
@@ -97,6 +100,8 @@
 		json["materialProviderName"] = materialProviderName.substr(0,materialProviderName.length-1);
 		json["materialInputPrice"] = materialInputPrice.substr(0,materialInputPrice.length-1);
 		json["materialPartNum"] = materialPartNum.substr(0,materialPartNum.length-1);
+		
+		json["materialNum"] = materialNum;
 		checkbox.val(JSON.stringify(json));
 	}
 	

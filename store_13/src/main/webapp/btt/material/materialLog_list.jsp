@@ -63,6 +63,7 @@
 	<div class="panelBar">
 		<ul class="toolBar">
 			<li><a class="add" href="/btt/material/materialLog_addDisplay.jsp" target="dialog" rel="material_addDisplay"><span>添加</span></a></li>
+			<li><a class="add" href="/btt/material/materialLog_mix.jsp" target="dialog" rel="material_addDisplay"><span>物料拼合</span></a></li>
 			<li><a class="delete" href="demo/common/ajaxDone.html?uid={sid_user}" target="ajaxTodo" title="确定要删除吗?"><span>删除</span></a></li>
 			<li><a class="edit" href="/btt/user/group_edit.action?uid={sid_user}" target="dialog"><span>修改</span></a></li>
 			<li class="line">line</li>

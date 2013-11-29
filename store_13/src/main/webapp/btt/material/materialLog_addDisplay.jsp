@@ -28,51 +28,63 @@
 				<select class="combox" name="logDo" id="operation" onchange="changeLogDo();" >
 					<option value="out">物料出库</option>
 					<option value="in">物料入库</option>
+					<option value="mix">物料拼合</option>
 				</select>
 				<input type="hidden" id="logDo" value="out" rel="logDo" />
 			</p>
 			<p>
 				<label>物 料 名：</label>
-				<input name="materialCombine.materialId" value="" type="hidden" >
+				<input name="materialCombine.materialId"  type="hidden" >
 				<input name="materialCombine.materialName" type="text" />
 				<a class="btnLook" href="/material_list_combineLookup_factory.action?logDo={logDo}" lookupGroup="materialCombine" targetType="dialog">物料带回</a>
 			</p>
 			<p>
 				<label>供应商：</label>
 				<input name="materialCombine.materialProviderId" type="hidden" >
-				<input name="materialCombine.materialProviderName" type="text" size="25" value=""/>
+				<input name="materialCombine.materialProviderName" type="text" size="25" />
 			</p>
 			<p>
-				<label>数量：</label>
-				<input name="materialCombine.materialNum" type="text" size="25" value=""/>
+				<label>各物料总数量：</label>
+				<input name="materialCombine.materialPartNum" type="text" size="25"/>
 			</p>
-			
+			<p>
+				<label>总数量：</label>
+				<input name="materialCombine.materialNum" type="text" size="25" />
+			</p>
 			
 			<p>
 				<label>价格：</label>
-				<input name="logMaterialInputPrice" type="text" size="25" value=""/>
+				<input name="materialCombine.materialPriceId" type="hidden"/>
+				<input name="materialCombine.materialInputPrice" type="text" size="25" />
 			</p>
 			<p>
 				<label>使用：</label>
-				<input name="logMaterialUse" type="text" size="25" value=""/>
+				<input name="logMaterialUse" type="text" size="25" />
 			</p>
 			<p>
 				<label>项目：</label>
-				<input name="logMaterialProject" type="text" size="25" value=""/>
+				<input name="logMaterialProject" type="text" size="25" />
 			</p>
 			<div id = "hiddenPart">
 			
 			<p>
 				<label>采购申请单号：</label>
-				<input name="logBuyRequirecode" type="text" size="25" value=""/>
+				<input name="logBuyRequirecode" type="text" size="25" />
 			</p>
 			<p>
 				<label>采购合同号：</label>
-				<input name="logBuyAgreementcode" type="text" size="25" value=""/>
+				<input name="logBuyAgreementcode" type="text" size="25" />
+			</p>
+			<p>
+				<label>物料1：</label>
+				<input name="combineMaterialNum" type="text" size="25" />
+			</p>
+			<p>
+				
 			</p>
 			<p>
 				<label>备注：</label>
-				<input name="logRemark" type="text" size="25" value=""/>
+				<input name="logRemark" type="text" size="25" />
 			</p>
 			</div>
 		</div>
