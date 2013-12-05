@@ -55,6 +55,7 @@
   			<result name="success">/btt/material/materialFactory_combineLookup.jsp</result>
   			<result name="in">/btt/material/materialFactory_combineLookup_in.jsp</result>
   			<result name="out">/btt/material/materialFactory_combineLookup_out.jsp</result>
+  			<result name="mix">/btt/material/materialFactory_combineLookup_mix.jsp</result>
   		</action>
   		<action name="material_add" method="add" class="cn.btttech.action.MaterialAction">
   			<result type="stream">

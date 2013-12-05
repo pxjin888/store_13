@@ -4,12 +4,12 @@ public class LastStore {
 
 	
 	private int materialPriceId;
-	private int materialFactoryId;
+	private String materialFactoryId;
 	private String materialFactoryName;
 	private Float inputPrice;
 	private Float materialPartNum;
 	
-	public LastStore(int materialPriceId, int materialFactoryId,
+	public LastStore(int materialPriceId, String materialFactoryId,
 			String materialFactoryName, Float inputPrice, Float materialPartNum) {
 		super();
 		this.materialPriceId = materialPriceId;
@@ -25,10 +25,10 @@ public class LastStore {
 	public void setMaterialPriceId(int materialPriceId) {
 		this.materialPriceId = materialPriceId;
 	}
-	public int getMaterialFactoryId() {
+	public String getMaterialFactoryId() {
 		return materialFactoryId;
 	}
-	public void setMaterialFactoryId(int materialFactoryId) {
+	public void setMaterialFactoryId(String materialFactoryId) {
 		this.materialFactoryId = materialFactoryId;
 	}
 	public String getMaterialFactoryName() {

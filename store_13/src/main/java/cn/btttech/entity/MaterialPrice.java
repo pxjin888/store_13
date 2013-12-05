@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,7 +31,6 @@ public class MaterialPrice  implements java.io.Serializable {
 	 private static final long serialVersionUID = -2129433969284904604L;
 	 private Integer materialPriceId;
      private Material material;
-     private MaterialFactory materialFactory;
      private Float materialPriceInputprice;
      private Float materialPartNum;
      private Date materialPriceTime;
@@ -54,7 +54,7 @@ public class MaterialPrice  implements java.io.Serializable {
     public void setMaterialPriceId(Integer materialPriceId) {
         this.materialPriceId = materialPriceId;
     }
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY,cascade={CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
         @JoinColumn(name="material_id")
 
     public Material getMaterial() {
@@ -64,16 +64,6 @@ public class MaterialPrice  implements java.io.Serializable {
     public void setMaterial(Material material) {
         this.material = material;
     }
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "material_factory_id")
-	public MaterialFactory getMaterialFactory() {
-		return this.materialFactory;
-	}
-
-	public void setMaterialFactory(MaterialFactory materialFactory) {
-		this.materialFactory = materialFactory;
-	}
     
     @Column(name="material_price_inputprice", precision=12, scale=0)
 
@@ -105,7 +95,7 @@ public class MaterialPrice  implements java.io.Serializable {
         this.materialPriceTime = materialPriceTime;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "materialPrices")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "materialPrices", cascade={CascadeType.MERGE,CascadeType.REFRESH})
 	public Set<MaterialFactory> getMaterialFactories() {
 		return this.materialFactories;
 	}

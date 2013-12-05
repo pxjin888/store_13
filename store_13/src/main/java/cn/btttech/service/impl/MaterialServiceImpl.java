@@ -1,7 +1,9 @@
 package cn.btttech.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.btttech.dao.BaseDao;
+import cn.btttech.entity.LogMaterial;
 import cn.btttech.entity.Material;
 import cn.btttech.entity.MaterialFactory;
 import cn.btttech.entity.MaterialPrice;
@@ -25,11 +28,6 @@ public class MaterialServiceImpl implements MaterialService {
     @Autowired
     private BaseDao baseDao; 
 
-    @Resource(name="moduleService")
-	private ModuleService moduleService;
-	
-	@Resource(name="operationService")
-	private OperationService operationService;
   
     public void setBaseDao(BaseDao baseDao) {
 		this.baseDao = baseDao;
@@ -119,6 +117,66 @@ public class MaterialServiceImpl implements MaterialService {
 //		}
 		return prices;
 	}
-
-
+	
+	//一级物料入库
+	@Override
+	@Transactional(readOnly = false)
+	public void firstMaterialInput(LogMaterial logMaterial, int materialId, int materialFactoryId, float materialNum, float price){
+		Material material = baseDao.get(Material.class, materialId);
+		Float preNum = material.getMaterialNum();
+		Set<LogMaterial> logMaterials = new HashSet<LogMaterial>();
+		logMaterials.add(logMaterial);
+		
+		MaterialPrice materialPrice = new MaterialPrice();
+		materialPrice.setMaterial(material);
+		
+		MaterialFactory materialFactory = baseDao.get(MaterialFactory.class, materialFactoryId); 
+		
+		materialPrice.getMaterialFactories().add(materialFactory);
+		materialPrice.setMaterialPartNum(materialNum);
+		materialPrice.setMaterialPriceInputprice(price);
+		materialPrice.setMaterialPriceTime(new Date());
+		
+		material.getMaterialPrices().add(materialPrice);
+		material.setMaterialNum(preNum+materialNum);
+		material.setLogs(logMaterials);
+		
+		logMaterial.setMaterialFactory(materialFactory);
+		logMaterial.setMaterial(material);
+		
+		materialFactory.getMaterialPrices().add(materialPrice);
+		
+		baseDao.update(material);
+	
+	}
+	
+	
+	//物料出库
+	@Override
+	@Transactional(readOnly = false)
+	public void materialOutput(LogMaterial logMaterial, int materialId, String []materialFactoryIds,  String [] materialPriceIds, String [] materialNums, Float totalMaterialNum){
+		
+		Material material = baseDao.get(Material.class, materialId);
+		HashSet<MaterialPrice> materialPrices = new HashSet<MaterialPrice>();
+		for (int i = 0; i < materialPriceIds.length; i++) {
+			MaterialPrice materialPrice = baseDao.get(MaterialPrice.class, Integer.parseInt(materialPriceIds[i]));
+			materialPrice.setMaterialPartNum(materialPrice.getMaterialPartNum() - Float.parseFloat(materialNums[i]));
+			materialPrices.add(materialPrice);
+		}
+		
+		material.setMaterialPrices(materialPrices);
+		material.setMaterialNum(material.getMaterialNum() - totalMaterialNum);
+		Set<LogMaterial> logMaterials = new HashSet<LogMaterial>();
+		logMaterials.add(logMaterial);
+		material.setLogs(logMaterials);
+		
+		logMaterial.setMaterial(material);
+		
+		baseDao.update(material);
+		
+	}
+	//二级物料入库，即物料拼合
+	
+	
+	
 }  

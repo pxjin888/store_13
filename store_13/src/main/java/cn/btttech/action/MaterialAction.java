@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import javax.annotation.Resource;
@@ -19,6 +21,7 @@ import cn.btttech.entity.Material;
 import cn.btttech.entity.MaterialFactory;
 import cn.btttech.entity.MaterialPrice;
 import cn.btttech.entity.view.LastStore;
+import cn.btttech.entity.view.MaterialPlusChildren;
 import cn.btttech.service.MaterialFactoryService;
 import cn.btttech.service.MaterialService;
 
@@ -93,14 +96,27 @@ public class MaterialAction extends ActionBase {
     			List<MaterialPrice> materialPrices = materialService.getMaterialFactories(material);
     			List<LastStore> lastStores = new ArrayList<LastStore>();
     			for (MaterialPrice materialPrice : materialPrices) {
-					int materialFactoryId = materialPrice.getMaterialFactory().getMaterialFactoryId();
-					MaterialFactory materialFactory = materialFactoryService.getById(materialFactoryId);
-					String materialFactoryName = materialFactory.getMaterialFactoryName();
+					
+					Set<MaterialFactory> materialFactories = materialPrice.getMaterialFactories();
+					String materialFactoryId = null;
+					String materialFactoryName = null;
+					
+					
+					for (MaterialFactory materialFactory : materialFactories) {
+						 
+						materialFactoryName = materialFactory.getMaterialFactoryName()+"^";
+						materialFactoryId = materialFactory.getMaterialFactoryId() + "^";
+					}
+					
+					materialFactoryId = materialFactoryId.substring(0, materialFactoryId.length()-2);
+					materialFactoryName = materialFactoryName.substring(0, materialFactoryName.length()-2);
+					
 					Float materialPartNum = materialPrice.getMaterialPartNum();
 					int materialPriceId = materialPrice.getMaterialPriceId();
 					Float inputPrice = materialPrice.getMaterialPriceInputprice();
 					LastStore lastStore = new LastStore(materialPriceId, materialFactoryId, materialFactoryName, inputPrice, materialPartNum);
 					lastStores.add(lastStore);
+					
 				}
     			materialMap.put(material, lastStores);
 			}
@@ -113,6 +129,30 @@ public class MaterialAction extends ActionBase {
     		List<MaterialFactory> materialFactories = materialFactoryService.list();
     		request.put("materialFactories", materialFactories);
     		request.put("material_list", list);
+    	}
+    	
+    	//获取物料的基本信息
+    	else if(logDo.equals("mix")){
+    		
+    		ArrayList<MaterialPlusChildren> materialPlusChildrens = new ArrayList<MaterialPlusChildren>();
+    		for (Material material : list) {
+    			String materialChildrenId = "";
+    			String materialChildrenName = "";
+    			String materialChildrenNum = "";
+    			
+    			Set<Material> materialChildren = material.getMaterialsForMaterialchildId();
+    			for (Material materialChild : materialChildren) {
+    				materialChildrenId = materialChild.getMaterialId()+",";
+    				materialChildrenName = materialChild.getMaterialName()+",";
+    				materialChildrenNum = materialChild.getMaterialNum()+",";
+				}
+    			
+				MaterialPlusChildren materialPlusChildren = 
+						new MaterialPlusChildren(material.getMaterialId(), material.getMaterialName(), material.getMaterialUnit(), material.getMaterialNum(), materialChildrenId, materialChildrenName, materialChildrenNum);
+				
+				materialPlusChildrens.add(materialPlusChildren);
+			}
+    		request.put("material_children", materialPlusChildrens);
     	}
     	
     	

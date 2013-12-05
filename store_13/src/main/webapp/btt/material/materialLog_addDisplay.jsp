@@ -28,7 +28,6 @@
 				<select class="combox" name="logDo" id="operation" onchange="changeLogDo();" >
 					<option value="out">物料出库</option>
 					<option value="in">物料入库</option>
-					<option value="mix">物料拼合</option>
 				</select>
 				<input type="hidden" id="logDo" value="out" rel="logDo" />
 			</p>

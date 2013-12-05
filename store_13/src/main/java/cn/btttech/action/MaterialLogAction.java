@@ -51,6 +51,8 @@ public class MaterialLogAction extends ActionBase {
     @Resource(name="materialFactoryService")
 	private MaterialFactoryService materialFactoryService;
     
+    
+    
     public String list(){
     	int firstResultInt = 1;
     	if(firstResult != null){
@@ -73,7 +75,7 @@ public class MaterialLogAction extends ActionBase {
 		
 		String materialCombineMaterialId = request.getParameter("materialCombine.materialId");
 //		String materialCombineMaterialName = request.getParameter("materialCombine.materialName");
-//		String materialCombineMaterialProviderName = request.getParameter("materialCombine.materialProviderId");
+		String materialCombineMaterialProviderName = request.getParameter("materialCombine.materialProviderName");
 		String materialCombineMaterialProviderId = request.getParameter("materialCombine.materialProviderId");
 		String materialCombineMaterialNum = request.getParameter("materialCombine.materialNum");
 		String materialCombineMaterialPartNum = request.getParameter("materialCombine.materialPartNum");
@@ -82,130 +84,62 @@ public class MaterialLogAction extends ActionBase {
 		
 		System.out.println("materialCombineMaterialId:"+materialCombineMaterialId);
 			
-		String [] materialIdArray = materialCombineMaterialId.split(",");
-		String [] materialProviderIdArray = materialCombineMaterialProviderId.split(",");
-		String [] materialNumArray = materialCombineMaterialNum.split(",");
-		String [] materialPriceArray = materialCombineMaterialInputPrice.split(",");
-		String [] materialUseArray = logMaterialUse.split(",");
-		String [] materialProjectArray = logMaterialProject.split(",");
-		String [] logBuyRequirecodeArray = logBuyRequirecode.split(",");
-		String [] logBuyAgreementcodeArray = logBuyAgreementcode.split(",");
-		String [] logRemarkArray = logRemark.split(",");
-		String [] materialPartNumArray = null;
-		String [] materialPriceIdArray = null;
-		System.out.println("materialCombineMaterialPartNum"+materialCombineMaterialPartNum);
-		if(!materialCombineMaterialPartNum.equals("")){
-			materialPartNumArray = materialCombineMaterialPartNum.split(",");
-			materialPriceIdArray = materialCombineMaterialPriceId.split(",");
-		}
-		
+//		String [] materialIdArray = materialCombineMaterialId.split(",");
+//		String [] materialProviderIdArray = materialCombineMaterialProviderId.split(",");
+//		String [] materialNumArray = materialCombineMaterialNum.split(",");
+//		String [] materialPriceArray = materialCombineMaterialInputPrice.split(",");
+//		String [] materialUseArray = logMaterialUse.split(",");
+//		String [] materialProjectArray = logMaterialProject.split(",");
+//		String [] logBuyRequirecodeArray = logBuyRequirecode.split(",");
+//		String [] logBuyAgreementcodeArray = logBuyAgreementcode.split(",");
+//		String [] logRemarkArray = logRemark.split(",");
+//		String [] materialPartNumArray = null;
+//		String [] materialPriceIdArray = null;
+//		System.out.println("materialCombineMaterialPartNum"+materialCombineMaterialPartNum);
+//		if(!materialCombineMaterialPartNum.equals("")){
+//			materialPartNumArray = materialCombineMaterialPartNum.split(",");
+//			materialPriceIdArray = materialCombineMaterialPriceId.split(",");
+//		}
+//		
 		String uuid = UuidGenerator.generate();
 		
 		if(logDo.equals("in")){
 			
-			for (int i=0;i<materialIdArray.length;i++) {
 				LogMaterial logMaterial = new LogMaterial();
-				logMaterial.setLogBuyAgreementcode(logBuyAgreementcodeArray[i]);
-				logMaterial.setLogBuyRequirecode(logBuyRequirecodeArray[i]);
+				logMaterial.setLogBuyAgreementcode(logBuyAgreementcode);
+				logMaterial.setLogBuyRequirecode(logBuyRequirecode);
 				logMaterial.setLogDo(logDo);
-				logMaterial.setLogMaterialInputPrice(Float.parseFloat(materialPriceArray[i]));
-				logMaterial.setLogMaterialNum(Float.parseFloat(materialNumArray[i]));
-				logMaterial.setLogMaterialProject(materialProjectArray[i]);
-				logMaterial.setLogMaterialUse(materialUseArray[i]);
-				logMaterial.setLogRemark(logRemarkArray[i]);
+				logMaterial.setLogMaterialInputPrice(Float.parseFloat(materialCombineMaterialInputPrice));
+				logMaterial.setLogMaterialNum(Float.parseFloat(materialCombineMaterialNum));
+				logMaterial.setLogMaterialProject(logMaterialProject);
+				logMaterial.setLogMaterialUse(logMaterialUse);
+				logMaterial.setLogRemark(logRemark);
 				logMaterial.setLogTime(new Date());
 				logMaterial.setLogCode(uuid);
 				
-				Material material = materialService.getById(Integer.parseInt(materialIdArray[i]));
+				materialService.firstMaterialInput(logMaterial, Integer.parseInt(materialCombineMaterialId), Integer.parseInt(materialCombineMaterialProviderId), Float.parseFloat(materialCombineMaterialNum), Float.parseFloat(materialCombineMaterialInputPrice));
 				
-				System.out.println(materialIdArray[i]+material);
-				Float num = material.getMaterialNum();
-				Set<LogMaterial> logMaterials = new HashSet<LogMaterial>();
-				logMaterials.add(logMaterial);
-				
-				System.out.println("num:"+materialNumArray[i]);
-				
-				
-				
-				MaterialPrice materialPrice = new MaterialPrice();
-				materialPrice.setMaterial(material);
-				MaterialFactory materialFactory = materialFactoryService.getById(Integer.parseInt(materialProviderIdArray[i]));
-				materialPrice.setMaterialFactory(materialFactory);
-				materialPrice.setMaterialPartNum(Float.parseFloat(materialNumArray[i]));
-				materialPrice.setMaterialPriceInputprice(Float.parseFloat(materialPriceArray[i]));
-				materialPrice.setMaterialPriceTime(new Date());
-				HashSet<MaterialPrice> materialPrices = new HashSet<MaterialPrice>();
-				
-				MaterialPrice materialPriceTemp = materialPriceService.combineMaterialItem(material, materialFactory, Float.parseFloat(materialPriceArray[i]));
-				if(materialPriceTemp == null){
-					materialPrices.add(materialPrice);
-					material.setMaterialPrices(materialPrices);
-				}else{
-					materialPriceTemp.setMaterialPartNum(materialPriceTemp.getMaterialPartNum() + Float.parseFloat(materialNumArray[i]));
-					materialPriceTemp.setMaterialPriceTime(new Date());
-					materialPrices.add(materialPriceTemp);
-					materialPriceService.update(materialPriceTemp);
-				}
-				
-				
-				material.setMaterialNum(Float.parseFloat(materialNumArray[i])+num);
-				material.setLogs(logMaterials);
-				
-				materialService.update(material);
-			}
 			
 		}else if(logDo.equals("out")){
 			
-			for (int i=0;i<materialIdArray.length;i++) {
-				Set<LogMaterial> logMaterials = new HashSet<LogMaterial>();
-				LogMaterial logMaterial = null;
-				if(materialPriceArray[i].contains("&")){
-					String[] materialPriceArrayTempArray = materialPriceArray[i].split("&");
-					String[] materialPartNumArrayTempArray = materialPartNumArray[i].split("&");
-					for (int j = 0; j < materialPriceArrayTempArray.length; j++) {
-						logMaterial = new LogMaterial();
-						logMaterial.setLogBuyAgreementcode(logBuyAgreementcodeArray[i]);
-						logMaterial.setLogBuyRequirecode(logBuyRequirecodeArray[i]);
-						logMaterial.setLogDo(logDo);
-						logMaterial.setLogMaterialProject(materialProjectArray[i]);
-						logMaterial.setLogMaterialUse(materialUseArray[i]);
-						logMaterial.setLogRemark(logRemarkArray[i]);
-						logMaterial.setLogTime(new Date());
-						logMaterial.setLogCode(uuid);
-						logMaterial.setLogMaterialInputPrice(Float.parseFloat(materialPriceArrayTempArray[j]));
-						logMaterial.setLogMaterialNum(Float.parseFloat(materialPartNumArrayTempArray[j]));
-						logMaterials.add(logMaterial);
-					}
-				}
-				
-				
-				Material material = materialService.getById(Integer.parseInt(materialIdArray[i]));
-				
-				System.out.println(materialIdArray[i]+material);
-				
-				logMaterials.add(logMaterial);
-				
-				System.out.println("num:"+materialNumArray[i]);
-				
-				
-				System.out.println(""+materialPriceIdArray[i]);
-				HashSet<MaterialPrice> materialPrices = new HashSet<MaterialPrice>();
-				if (materialPriceIdArray[i].contains("&")) {
-					String[] materialPriceIdArrayTempArray = materialPriceIdArray[i].split("&");
-					String[] materialPartNumArrayTempArray = materialPriceIdArray[i].split("&");
-					for (int j = 0; j < materialPriceIdArrayTempArray.length; j++) {
-						MaterialPrice materialPrice = materialPriceService.getById(Integer.parseInt(materialPriceIdArrayTempArray[j]));
-						materialPrice.setMaterialPartNum(materialPrice.getMaterialPartNum() - Float.parseFloat(materialPartNumArrayTempArray[j]));
-						materialPrices.add(materialPrice);
-					}
-				}
-				
-				material.setMaterialPrices(materialPrices);
-				material.setMaterialNum(material.getMaterialNum() - Float.parseFloat(materialNumArray[i]));
-				material.setLogs(logMaterials);
-				
-				materialService.update(material);
-			}
+			LogMaterial logMaterial = new LogMaterial();
+			logMaterial.setLogBuyAgreementcode(logBuyAgreementcode);
+			logMaterial.setLogBuyRequirecode(logBuyRequirecode);
+			logMaterial.setLogDo(logDo);
+			logMaterial.setLogMaterialNum(Float.parseFloat(materialCombineMaterialNum));
+			logMaterial.setLogMaterialProject(logMaterialProject);
+			logMaterial.setLogMaterialUse(logMaterialUse);
+			logMaterial.setLogRemark(logRemark+"{"+"价格："+materialCombineMaterialInputPrice+",数量："+materialCombineMaterialPartNum+",厂商："+materialCombineMaterialProviderName+"}");
+			logMaterial.setLogTime(new Date());
+			logMaterial.setLogCode(uuid);
+			
+			String [] materialCombineMaterialProviderIdArray = materialCombineMaterialProviderId.split("&");
+			
+			String [] materialCombineMaterialPartNumArray = materialCombineMaterialPartNum.split("&");
+			
+			String [] materialCombineMaterialPriceIdArray = materialCombineMaterialPriceId.split("&");
+			materialService.materialOutput(logMaterial, Integer.parseInt(materialCombineMaterialId), materialCombineMaterialProviderIdArray, materialCombineMaterialPriceIdArray, materialCombineMaterialPartNumArray, Float.parseFloat(materialCombineMaterialNum));
+			
 			
 		}else if(logDo.equals("mix")){
 			

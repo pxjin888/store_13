@@ -204,7 +204,7 @@ public class Material  implements java.io.Serializable {
     public void setMaterialUse(String materialUse) {
         this.materialUse = materialUse;
     }
-@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="material" )
+@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.LAZY, mappedBy="material" )
 
     public Set<MaterialPrice> getMaterialPrices() {
         return this.materialPrices;
@@ -213,7 +213,7 @@ public class Material  implements java.io.Serializable {
     public void setMaterialPrices(Set<MaterialPrice> materialPrices) {
         this.materialPrices = materialPrices;
     }
-@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="materialsForMaterialId")
+@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy="materialsForMaterialId")
 
     public Set<Material> getMaterialsForMaterialchildId() {
         return this.materialsForMaterialchildId;
